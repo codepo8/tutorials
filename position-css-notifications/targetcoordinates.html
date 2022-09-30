@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target coordinates as CSS Custom Properties</title>
+</head>
+<body>
+
+
+<a href="#">Test</a>
+<a href="#">Test</a>
+<a href="#">Test</a>
+<a href="#">Test</a>
+<a href="#">Test</a>
+<a href="#">Test</a>
+<a href="#">Test</a>
+
+<div id="moo">
+    <a href="#">Test</a>
+    <a href="#">Test</a>
+    <a href="#">Test</a>
+    <a href="#">Test</a>
+    <a href="#">Test</a>
+    <a href="#">Test</a>
+    <a href="#">Test</a>
+    
+</div>
+
+
+
+
+<button type="button" aria-expanded="false" aria-label="Menu" aria-controls="mainnav">
+    <svg width="24" height="24" aria-hidden="true">
+      <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z">
+    </svg>
+  </button>
+  
+<script>
+    
+    const getTargetCoordinates = (tag,event,parent = document.body) => {
+        const setprop = (name, value) => {
+            document.documentElement.style.setProperty(name, value);
+        }
+        parent.addEventListener(event,e => {
+            if (e.target.nodeName.toLowerCase() === tag) {
+                e.preventDefault();
+                const coords = e.target.getBoundingClientRect();
+                ['bottom', 'height', 'left', 'right', 'top', 'width'].forEach((prop) => {
+                    setprop(`--target-${prop}`, coords[prop]);
+                });
+                setprop('--target-center-x', coords.left + coords.width / 2);
+                setprop('--target-center-y', coords.top + coords.height / 2);
+            }
+        });
+    }
+    getTargetCoordinates('a','click');
+
+</script>
+    
+</body>
+</html>
